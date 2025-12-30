@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:apptalma_v9/core/theme/app_colors.dart';
 import 'package:apptalma_v9/core/theme/talma_custom_theme.dart';
-import 'package:apptalma_v9/shared/qr/qr_scanner_page.dart';
+// import 'package:apptalma_v9/shared/qr/qr_scanner_page.dart';
 
 import 'package:apptalma_v9/core/providers/user_provider.dart';
 import 'package:apptalma_v9/shared/widgets/app_snackbar_widget.dart';
@@ -208,35 +208,35 @@ class _DetailServicesPageState extends State<DetailServicesPage> {
     );
   }
 
-  void _openScanner() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => QrScannerPage(
-          taskId: 1,
-          directCapture: false,
-          onSave: (value) async {
-            if (!mounted) return;
-            setState(() {
-              qrValue = value;
-            });
+  // void _openScanner() async {
+  //   final result = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (_) => QrScannerPage(
+  //         taskId: 1,
+  //         directCapture: false,
+  //         onSave: (value) async {
+  //           if (!mounted) return;
+  //           setState(() {
+  //             qrValue = value;
+  //           });
 
-            final success = await _runAssignment(value);
-            if (success.state == true) {
-              await _loadResorces();
-            }
-          },
-        ),
-      ),
-    );
+  //           final success = await _runAssignment(value);
+  //           if (success.state == true) {
+  //             await _loadResorces();
+  //           }
+  //         },
+  //       ),
+  //     ),
+  //   );
 
-    if (result != null) {
-      if (!mounted) return;
-      setState(() {
-        qrValue = result;
-      });
-    }
-  }
+  //   if (result != null) {
+  //     if (!mounted) return;
+  //     setState(() {
+  //       qrValue = result;
+  //     });
+  //   }
+  // }
 
   Future<void> _showRoleBottomSheet(dynamic data, String type) {
     final parentContext = context;
@@ -746,13 +746,15 @@ class _DetailServicesPageState extends State<DetailServicesPage> {
                       children: [
                         _TeamPage(
                           resources: _resources,
-                          onAddTap: _openScanner,
+                          onAddTap: () {},
+                          // onAddTap: _openScanner,
                           onItemTap: (res) => _showRoleBottomSheet(res, "T"),
                         ),
                         _RolesPage(
                           roles: _roles,
                           resources: _resources,
-                          onAddTap: _openScanner,
+                          onAddTap: () {},
+                          // onAddTap: _openScanner,
                           onItemTap: (role) => _showRoleBottomSheet(role, "R"),
                         ),
                       ],
