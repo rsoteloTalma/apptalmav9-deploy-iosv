@@ -30,6 +30,13 @@
 	<string>Main</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Necesitamos acceso a la cámara para escanear códigos QR.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Necesitamos acceso a la galería.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Necesitamos guardar imágenes en la galería.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>iOS requiere este permiso.</string>
+
 
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
