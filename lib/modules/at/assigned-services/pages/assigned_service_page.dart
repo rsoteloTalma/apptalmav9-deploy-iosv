@@ -77,6 +77,8 @@ class _AssignedServicesPageState extends State<AssignedServicesPage> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserProvider>(context).user;
     final drawerParams = Provider.of<DrawerParamsProvider>(context);
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isTablet = screenWidth >= 600;
 
     final filteredItems = _groundServices
         .where((item) =>
@@ -116,8 +118,8 @@ class _AssignedServicesPageState extends State<AssignedServicesPage> {
         elevation: 0,
         title: LayoutBuilder(
           builder: (context, constraints) {
-            final double screenWidth = MediaQuery.of(context).size.width;
-            final double imageWidth = screenWidth * 0.3;
+            double screenWidth = MediaQuery.of(context).size.width;
+            double imageWidth = screenWidth * (isTablet ? 0.2 : 0.3);
             return Image.asset(
               'assets/images/logo_talma_2.png',
               width: imageWidth,
@@ -243,7 +245,7 @@ class _AssignedServicesPageState extends State<AssignedServicesPage> {
                                       ClipRRect(
                                         borderRadius: BorderRadius.circular(8),
                                         child: Image.network(
-                                          'https://content.airhex.com/content/logos/airlines_${service.company}_40_40_s.png',
+                                          'https://talmacioapi.azurewebsites.net/Resource/${service.company}?type=2',
                                           width: 30,
                                           height: 30,
                                           fit: BoxFit.cover,

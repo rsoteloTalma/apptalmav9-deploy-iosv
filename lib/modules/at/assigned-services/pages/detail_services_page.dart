@@ -543,7 +543,7 @@ class _DetailServicesPageState extends State<DetailServicesPage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(
-                                    'https://content.airhex.com/content/logos/airlines_${widget.service.company}_110_40_r.png',
+                                    'https://talmacioapi.azurewebsites.net/Resource/${widget.service.company}?type=3',
                                     width: 110,
                                     height: 30,
                                     fit: BoxFit.fill,

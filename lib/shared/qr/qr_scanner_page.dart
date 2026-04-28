@@ -67,6 +67,8 @@ class _QrScannerPageState extends State<QrScannerPage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    bool isTablet = screenWidth >= 600;
     final scanner = MobileScanner(
       controller: controller,
       onDetect: _onDetect,
@@ -93,16 +95,20 @@ class _QrScannerPageState extends State<QrScannerPage> {
               children: [
                 Expanded(
                   flex: 8,
-                  child: Container(
-                    margin: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border:
-                          Border.all(color: AppColors.primaryColor, width: 2),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: scanner,
+                  child: Center(
+                    child: Container(
+                      width: !isTablet ? 300 : 500,
+                      height: !isTablet ? 300 : 500,
+                      margin: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        border:
+                            Border.all(color: AppColors.primaryColor, width: 2),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
+                        child: scanner,
+                      ),
                     ),
                   ),
                 ),
@@ -110,20 +116,70 @@ class _QrScannerPageState extends State<QrScannerPage> {
                   flex: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: qrTextController,
-                      readOnly: !_isEditable,
-                      decoration: InputDecoration(
-                        labelText: "ID Escaneado",
-                        border: const OutlineInputBorder(),
-                        prefixIcon: const Icon(Icons.qr_code),
-                        suffixIcon: IconButton(
-                          icon:
-                              Icon(_isEditable ? Icons.lock_open : Icons.edit),
-                          onPressed: () {
-                            setState(() {
-                              _isEditable = !_isEditable;
-                            });
+                    child: Center(
+                      child: SizedBox(
+                        width: !isTablet ? 300 : 500,
+                        child: ValueListenableBuilder<TextEditingValue>(
+                          valueListenable: qrTextController,
+                          builder: (context, value, child) {
+                            final hasValue = value.text.trim().isNotEmpty;
+                            final highlightColor =
+                                Colors.green; // Color para resaltar
+
+                            return TextField(
+                              controller: qrTextController,
+                              readOnly: !_isEditable,
+                              style: TextStyle(
+                                fontWeight: hasValue
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                color: hasValue ? highlightColor : null,
+                              ),
+                              decoration: InputDecoration(
+                                labelText: "ID Escaneado",
+                                filled: hasValue,
+                                fillColor: hasValue
+                                    ? highlightColor.withOpacity(0.1)
+                                    : null,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        hasValue ? highlightColor : Colors.grey,
+                                    width: hasValue ? 2.0 : 1.0,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color:
+                                        hasValue ? highlightColor : Colors.grey,
+                                    width: hasValue ? 2.0 : 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: hasValue
+                                        ? highlightColor
+                                        : Theme.of(context).primaryColor,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.qr_code,
+                                  color: hasValue ? highlightColor : null,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    _isEditable ? Icons.lock_open : Icons.edit,
+                                    color: hasValue ? highlightColor : null,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isEditable = !_isEditable;
+                                    });
+                                  },
+                                ),
+                              ),
+                            );
                           },
                         ),
                       ),
