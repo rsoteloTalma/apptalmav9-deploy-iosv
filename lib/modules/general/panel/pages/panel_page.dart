@@ -185,7 +185,7 @@ class _PanelMainState extends State<PanelPage> {
                           final user =
                               Provider.of<UserProvider>(context, listen: false)
                                   .user;
-                          final route = firstPermission.url ?? '/';
+                          final route = '/assigned-services';
 
                           context.push(
                             route,
