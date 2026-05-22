@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:apptalma_v9/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
@@ -28,9 +30,11 @@ class _QrScannerPageState extends State<QrScannerPage> {
   final TextEditingController qrTextController = TextEditingController();
   bool _isProcessing = false;
   bool _isEditable = false;
+  Timer? _saveTimer;
 
   @override
   void dispose() {
+    _saveTimer?.cancel();
     controller.dispose();
     qrTextController.dispose();
     super.dispose();
@@ -47,15 +51,22 @@ class _QrScannerPageState extends State<QrScannerPage> {
       if (rawValue != null && rawValue.isNotEmpty) {
         debugPrint('QR detectado: $rawValue');
 
-        // actualizar el textfield
         setState(() {
           qrTextController.text = rawValue;
         });
 
         if (widget.directCapture) {
-          Navigator.pop(context, rawValue); // captura directa
+          Navigator.pop(context, rawValue);
         } else {
-          _isProcessing = false; // seguir leyendo
+          _isProcessing = false;
+          _saveTimer?.cancel();
+          _saveTimer = Timer(const Duration(milliseconds: 500), () {
+            final value = qrTextController.text.trim();
+            if (value.isNotEmpty && mounted) {
+              widget.onSave?.call(value);
+              Navigator.pop(context, value);
+            }
+          });
         }
       } else {
         _isProcessing = false;
